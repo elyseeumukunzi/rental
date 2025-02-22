@@ -23,8 +23,22 @@ import axios, { Axios } from 'axios';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { List, ListItem, ListItemIcon, ListItemText, TextareaAutosize } from '@mui/material';
+import { Check, Folder } from '@mui/icons-material';
+import { styled } from '@mui/material/styles';
 
 const cards = [1, 2, 3,];
+function generate(element) {
+    return [0, 1, 2].map((value) =>
+        React.cloneElement(element, {
+            key: value,
+        }),
+    );
+}
+
+const Demo = styled('div')(({ theme }) => ({
+    backgroundColor: theme.palette.background.paper,
+}));
 
 
 
@@ -38,7 +52,56 @@ export default function Booking({ category }) {
     const id = searchParams.get("id");
     const [property, setProperty] = React.useState();
     const [properties, setProperties] = React.useState([]);
+    const [dense, setDense] = React.useState(false);
+    const [secondary, setSecondary] = React.useState(false);
+    const [features, setFeatures] = React.useState([]);
+    const isLoggedIn = !!localStorage.getItem("user");
+    const navigate = useNavigate();
 
+    React.useEffect(() => {
+        if (!isLoggedIn) {
+            navigate("/login"); 
+        }
+    }, [isLoggedIn, navigate]);
+
+    React.useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/properties', {
+
+
+        }, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            }
+        }).then(
+            res => {
+                setProperties(res.data);
+
+
+            }
+        );
+
+
+
+
+    }, [])
+
+
+    React.useEffect(() => {
+        axios.get(`http://127.0.0.1:8000/api/features?id=${id}`, {
+
+
+        }, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            }
+        }).then(
+            res => {
+                setFeatures(res.data);
+
+
+            }
+        );
+    }, [])
 
     React.useEffect(() => {
         axios.get(`http://127.0.0.1:8000/api/property?id=${id}`, {
@@ -85,7 +148,7 @@ export default function Booking({ category }) {
             );
 
     }
-    const navigate = useNavigate();
+    
     //   const history = useHistory();
     //   const toproduct = () => {
     //     history.push("/Home")
@@ -181,32 +244,66 @@ export default function Booking({ category }) {
                     <Grid container spacing={2} sx={{ mt: 2 }}>
 
                         <Grid item xs={8}>
-                            Grid 8
+                            <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+                                Here are some features of the property
+                            </Typography>
+                            <Demo>
+                                <List dense>
+                                    {features.length > 0 ? (
+                                        features.map((feature, index) => (
+                                            <ListItem key={index}>
+                                                <ListItemIcon>
+                                                    <Check />
+                                                </ListItemIcon>
+                                                <ListItemText primary={feature.name} />
+                                            </ListItem>
+                                        ))
+                                    ) : (
+                                        <ListItem>
+                                            <ListItemText primary="No features available" />
+                                        </ListItem>
+                                    )}
+                                </List>
+                            </Demo>
+                            <Typography sx={{ mt: 30, mb: 2 }} variant="h6" component="div">
+                                Similar Properties
+                            </Typography>
+                            <Grid container spacing={4} sx={{ mt: 4 }}>
+
+                                {properties.map((property) => (
+                                    <Propert title={property.title} image={property.image1} description={property.description} price={property.price} id={property.id} />
+
+                                ))}
+                            </Grid>
+
+
                         </Grid>
                         <Grid item xs={4}>
                             <Typography><b>Book Now a {property ? (property.title) : ("")}</b></Typography>
                             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12} sm={6}>
-                                        
+
                                         <TextField
-                                            autoComplete="given-name"
-                                            name="firstName"
+                                            autoComplete="dates"
+                                            name="From Dates"
                                             required
                                             fullWidth
-                                            id="firstName"
-                                            label="First Name"
-                                            autoFocus
+                                            id="from"
+                                            label="From Dates"
+
+
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
                                         <TextField
                                             required
                                             fullWidth
-                                            id="lastName"
-                                            label="Last Name"
-                                            name="lastName"
-                                            autoComplete="family-name"
+                                            id="to"
+                                            label="To dates"
+                                            name="to"
+                                            autoComplete='dates'
+
 
                                         />
                                     </Grid>
@@ -223,38 +320,10 @@ export default function Booking({ category }) {
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <TextField
-                                            required
-                                            fullWidth
-                                            id="email"
-                                            label="Email Address"
-                                            name="email"
-                                            autoComplete="email"
 
-                                        />
-                                    </Grid>
-
-
-                                    <Grid item xs={12}>
-                                        <TextField
-                                            required
-                                            fullWidth
-                                            name="password"
-                                            label="Password"
-                                            type="password"
-                                            id="password"
-                                            autoComplete="new-password"
-
-
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <FormControlLabel
-                                            control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                            label="I want to receive inspiration, marketing promotions and updates via email."
-                                        />
                                     </Grid>
                                 </Grid>
+
                                 <Button
                                     type="submit"
                                     fullWidth
@@ -262,15 +331,9 @@ export default function Booking({ category }) {
                                     sx={{ mt: 3, mb: 2 }}
                                 // onClick={refresh}
                                 >
-                                    Sign Up
+                                    BOOK NOW
                                 </Button>
-                                <Grid container justifyContent="flex-end">
-                                    <Grid item>
-                                        <Link to='/login' variant="body2">
-                                            Already have an account? Sign in
-                                        </Link>
-                                    </Grid>
-                                </Grid>
+
                             </Box>
                         </Grid>
                     </Grid>
