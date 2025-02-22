@@ -31,6 +31,7 @@ Route::get('/features', [FeatureController::class, 'features']);
 Route::get('/bookings', [BookingController::class, 'index']);
 Route::get('/booking', [BookingController::class, 'booking']);
 Route::post('/createbooking', [BookingController::class, 'createbooking']);
+Route::get('/selectbookings', [BookingController::class, 'mybooking']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/updatebooking', [BookingController::class, 'updatebooking']);
 

@@ -56,11 +56,10 @@ class BookingResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('property_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('property.title')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user_id.')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('start_date')
                     ->searchable(),

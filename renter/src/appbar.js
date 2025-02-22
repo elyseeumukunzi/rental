@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Link, useNavigate } from "react-router-dom";
 import { MapsHomeWork } from '@mui/icons-material';
 
-const userpages = ['DASHBOARD', 'ITEMS', 'BOOKING'];
+const userpages = ['DASHBOARD', 'ITEMS', 'BOOKINGS'];
 const guestpages = ['HOME', 'ITEMS', 'ABOUTUS', 'LOGIN'];
 const settings = ['Profile', 'Account', 'Dashboard'];
 

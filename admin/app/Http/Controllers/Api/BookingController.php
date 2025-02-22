@@ -20,7 +20,23 @@ class BookingController extends Controller
     }
     public function MyBooking(Request $request) //get only user's booking according to the user id
     {
-        return Booking::where('user_id', $request->id)->get();
+        $bookings = Booking::where('user_id', $request->userid)
+            ->with('property:id,title') // Select only property title
+            ->get();
+
+        // Modify response to include the property title
+        $bookings = $bookings->map(function ($booking) {
+            return [
+                'id' => $booking->id,
+                'start_date' => $booking->start_date, // Ensure column names match
+                'end_date' => $booking->end_date,
+                'property_id' => $booking->property_id,
+                'property_title' => $booking->property ? $booking->property->title : 'N/A',
+                'status' => $booking->status,
+                'comment' => $booking->comment,
+            ];
+        });
+        return $bookings;
 
     }
     public function createbooking(Request $request)

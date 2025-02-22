@@ -80,6 +80,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/booking" element={<Booking />} />
             <Route path="/bookings" element={<Bookings />} />
+            <Route path="/dashboard" element={<Home />} />
+
 
 
 

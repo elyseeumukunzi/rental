@@ -98,51 +98,7 @@ export default function Booking({ category }) {
 
     };
 
-    //   const handleSubmit = async (event) => {
-    //     event.preventDefault();
-    //     try {
-    //       const response = await axios.post("http://127.0.0.1:8000/api/bookings", formData, {
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //       });
-    //       console.log("Booking successful:", response.data);
-    //       alert("Booking successful!");
-    //     } catch (error) {
-    //       console.error("Error submitting booking:", error);
-    //       alert("Failed to book. Please try again.");
-    //     }
-    //   };    
-
-    // React.useEffect(() => {
-    //     if (!isLoggedIn) {
-    //         navigate("/login");
-    //     }
-    // }, [isLoggedIn, navigate]);
-
-    // React.useEffect(() => {
-    //     axios.get('http://127.0.0.1:8000/api/properties', {
-
-
-    //     }, {
-    //         headers: {
-    //             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    //         }
-    //     }).then(
-    //         res => {
-    //             setProperties(res.data);
-
-
-    //         }
-    //     );
-
-
-
-
-    // }, [])
-
-
-    React.useEffect(() => {
+        React.useEffect(() => {
         axios.get(`http://127.0.0.1:8000/api/features?id=${id}`, {
 
 
@@ -294,7 +250,7 @@ export default function Booking({ category }) {
                             <Grid container spacing={4} sx={{ mt: 4 }}>
 
                                 {properties.map((property) => (
-                                    <Propert title={property.title} image={property.image1} description={property.description} price={property.price} id={property.id} />
+                                    <Propert title={property.title} image={property.image1} description={property.description} price={property.price} id={property.id}  />
 
                                 ))}
                             </Grid>

@@ -36,7 +36,7 @@ export default function Propert({ title, description, image, location, price, id
                 //image={require('http://127.0.0.1:8000/storage/app/public/appartment1.webp')}
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                    <Typography gutterBottom variant="h7" component="div">
                         {title}
 
 
