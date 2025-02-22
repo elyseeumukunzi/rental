@@ -57,33 +57,89 @@ export default function Booking({ category }) {
     const [features, setFeatures] = React.useState([]);
     const isLoggedIn = !!localStorage.getItem("user");
     const navigate = useNavigate();
+    const [from, setFrom] = React.useState(''); 
+    const queryParams = new URLSearchParams(location.search);
+    const propertyId = queryParams.get("id"); // Extract 'id' from URL
+    const [formData, setFormData] = React.useState({
+        start_date: "",
+        end_date: "",
+        phone: "",
+        status: "0",
+        property_id: propertyId || "",
+        user_id: localStorage.getItem("userid") || "",
 
-    React.useEffect(() => {
-        if (!isLoggedIn) {
-            navigate("/login"); 
-        }
-    }, [isLoggedIn, navigate]);
+    });
+    const handleChange = (event) => {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value,
+        });
+    };
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
 
-    React.useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/properties', {
-
-
-        }, {
+        axios.post('http://127.0.0.1:8000/api/createbooking', formData, {
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            }
-        }).then(
-            res => {
-                setProperties(res.data);
+                "Content-Type": "application/json",
+            },
+        })
+            .then(
+                res => {
+                    console.log(res.data);
+                    navigate("/bookings");
+
+                }
+            )
+            .catch(
+                error => console.log(error)
+
+            );
+
+    };
+
+    //   const handleSubmit = async (event) => {
+    //     event.preventDefault();
+    //     try {
+    //       const response = await axios.post("http://127.0.0.1:8000/api/bookings", formData, {
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //       });
+    //       console.log("Booking successful:", response.data);
+    //       alert("Booking successful!");
+    //     } catch (error) {
+    //       console.error("Error submitting booking:", error);
+    //       alert("Failed to book. Please try again.");
+    //     }
+    //   };    
+
+    // React.useEffect(() => {
+    //     if (!isLoggedIn) {
+    //         navigate("/login");
+    //     }
+    // }, [isLoggedIn, navigate]);
+
+    // React.useEffect(() => {
+    //     axios.get('http://127.0.0.1:8000/api/properties', {
 
 
-            }
-        );
+    //     }, {
+    //         headers: {
+    //             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    //         }
+    //     }).then(
+    //         res => {
+    //             setProperties(res.data);
+
+
+    //         }
+    //     );
 
 
 
 
-    }, [])
+    // }, [])
 
 
     React.useEffect(() => {
@@ -119,40 +175,7 @@ export default function Booking({ category }) {
             }
         );
     }, [])
-    //save booking 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
 
-        axios.post('http://localhost/depot/api.php', {
-            //variables to be submited            
-        }, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            }
-        })
-            .then(
-                res => {
-                    console.log(res.data);
-                    //   setResData(res.data);
-                    //   setMessage(resData.message); 
-                    //   setShowAlert(true);
-                    //   setFirstName('');setLastName('');setPhone('');setEmail('');setUserName('');setPassword(''); 
-                    //   navigate("/login");    
-                    // console.log('the message is', message);
-
-                }
-            )
-            .catch(
-                error => console.log(error)
-            );
-
-    }
-    
-    //   const history = useHistory();
-    //   const toproduct = () => {
-    //     history.push("/Home")
-    // }
     React.useEffect(() => {
 
 
@@ -286,41 +309,38 @@ export default function Booking({ category }) {
 
                                         <TextField
                                             autoComplete="dates"
-                                            name="From Dates"
+                                            name="start_date"
                                             required
                                             fullWidth
-                                            id="from"
+                                            id="start_date"
                                             label="From Dates"
-
-
+                                            value={formData.from}
+                                            onChange={handleChange}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
                                         <TextField
                                             required
                                             fullWidth
-                                            id="to"
-                                            label="To dates"
-                                            name="to"
-                                            autoComplete='dates'
-
-
+                                            id="end_date"
+                                            label="To Dates"
+                                            name="end_date"
+                                            autoComplete="dates"
+                                            value={formData.to}
+                                            onChange={handleChange}
                                         />
                                     </Grid>
-
                                     <Grid item xs={12}>
                                         <TextField
                                             required
                                             fullWidth
                                             id="phone"
-                                            label="Phone number"
+                                            label="Phone Number"
                                             name="phone"
                                             autoComplete="phone"
-
+                                            value={formData.phone}
+                                            onChange={handleChange}
                                         />
-                                    </Grid>
-                                    <Grid item xs={12}>
-
                                     </Grid>
                                 </Grid>
 

@@ -27,6 +27,7 @@ class UserController extends Controller
             'success' => true,
             'message' => 'User authenticated',
             'user' => $user,
+            'userid' => $user->id,
             'token' => $token,
         ]);
 

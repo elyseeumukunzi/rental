@@ -25,7 +25,7 @@ class BookingController extends Controller
     }
     public function createbooking(Request $request)
     {
-        $booking = Booking::create($request->validated());
+        $booking = Booking::create($request->all());
 
         return response()->json([
             'message' => 'Booking created successfully!',

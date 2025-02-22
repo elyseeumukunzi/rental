@@ -92,6 +92,8 @@ export default function Login() {
       if (response.data.success) {
         localStorage.setItem("token", response.data.token); // Store token for session
         localStorage.setItem("user", JSON.stringify(response.data.user)); // Store user info
+        localStorage.setItem("userid", JSON.stringify(response.data.userid)); // Store user info
+
         navigate("/home"); // Redirect to home page
       } else {
         console.log("Login failed:", response.data.message);

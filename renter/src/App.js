@@ -23,6 +23,7 @@ import Aboutus from './contact';
 import Footer from './footer';
 import Session from 'react-session-api'
 import Booking from './booking';
+import Bookings from './bookings';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState('');
@@ -58,6 +59,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/" element={<Home />} />
             <Route path="/booking" element={<Booking />} />
+            
 
           </Routes>
           <div>
@@ -77,6 +79,8 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/" element={<Home />} />
             <Route path="/booking" element={<Booking />} />
+            <Route path="/bookings" element={<Bookings />} />
+
 
 
           </Routes>
